@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sigmelle — Matematika, IT va AI o'rganish platformasi</title>
+  <meta name="description" content="Sigmelle — matematika, dasturlash va sun'iy intellektni o'zbek, rus va ingliz tillarida bepul o'rganish platformasi. Tez orada!" />
+  <meta name="keywords" content="matematika, dasturlash, AI, machine learning, o'zbek, python, sigmelle" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Sigmelle — Matematika, IT va AI" />
+  <meta property="og:description" content="Bepul, ko'p tilli online o'quv platformasi. Tez orada!" />
+  <meta property="og:url" content="https://sigmelle.com" />
+  <meta property="og:type" content="website" />
+  <link rel="canonical" href="https://sigmelle.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <span class="logo-sym">σ</span>
+      <span class="logo-text">Sigmelle</span>
+    </div>
+    <div class="nav-links">
+      <a href="#kurslar" class="nav-link">Kurslar</a>
+      <a href="#haqida" class="nav-link">Haqida</a>
+      <a href="#notify" class="nav-link">Xabar ol</a>
+    </div>
+    <div class="nav-badge">Tez orada →</div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="coming-pill">
+      <span class="pulse"></span>
+      Ishga tushishiga oz qoldi
+    </div>
+
+    <h1>Matematika, IT va AI —<br /><span class="gold">chegarasiz o'rgan</span></h1>
+
+    <p class="subtitle">
+      Sigmelle — matematika, dasturlash va sun'iy intellektni
+      bepul o'rganish uchun platforma. O'zbek, rus va ingliz tillarida.
+    </p>
+
+    <div class="cta-row">
+      <a href="#notify" class="btn-primary">Birinchilardan bo'l</a>
+      <a href="https://youtube.com/@sigmelle" target="_blank" class="btn-secondary">YouTube →</a>
+    </div>
+
+    <div class="langs">
+      <span class="lang-pill">🇺🇿 O'zbekcha</span>
+      <span class="lang-pill">🇷🇺 Русский</span>
+      <span class="lang-pill">🇬🇧 English</span>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="kurslar">
+    <div class="feature">
+      <span class="feature-sym">∑</span>
+      <h3 class="feature-title">Matematika</h3>
+      <p class="feature-desc">Asosdan chuqurgacha — algebra, analiz, statistika, diskret matematika</p>
+    </div>
+    <div class="feature">
+      <span class="feature-sym">{ }</span>
+      <h3 class="feature-title">Dasturlash</h3>
+      <p class="feature-desc">Python, veb texnologiyalar, algoritmlar va ma'lumotlar tuzilmasi</p>
+    </div>
+    <div class="feature">
+      <span class="feature-sym">φ</span>
+      <h3 class="feature-title">Sun'iy intellekt</h3>
+      <p class="feature-desc">Machine learning, neyron tarmoqlar, AI loyihalar — amaliyot bilan</p>
+    </div>
+    <div class="feature">
+      <span class="feature-sym">∞</span>
+      <h3 class="feature-title">Bepul</h3>
+      <p class="feature-desc">Barcha kurslar hech qanday to'lovsiz — hamisha va hamma uchun</p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="haqida">
+    <div class="about-inner">
+      <div class="about-sym">σ</div>
+      <div class="about-text">
+        <h2>Sigmelle nima?</h2>
+        <p>
+          Sigmelle — matematika va texnologiya chegarasida tug'ilgan platforma.
+          σ (sigma) — aniqlik va mukammallik belgisi. "-elle" — nafosat va go'zallik.
+          Biz bilimni aniq, tushunarli va chiroyli qilamiz.
+        </p>
+        <p>
+          Klagenfurt va Toshkent universitetlarida AI tadqiqotchi tomonidan yaratilgan —
+          real ilm, real amaliyot, real natija.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTIFY -->
+  <section class="notify-section" id="notify">
+    <div class="notify-box">
+      <h2>Birinchilardan bo'l</h2>
+      <p>Sigmelle ishga tushganda xabar olish uchun emailingni qoldir</p>
+      <form class="email-form" onsubmit="handleSubmit(event)">
+        <input
+          class="email-input"
+          type="email"
+          placeholder="email@example.com"
+          required
+          id="emailInput"
+        />
+        <button class="email-btn" type="submit">Xabar ber</button>
+      </form>
+      <p class="success-msg" id="successMsg" style="display:none">
+        ✓ Rahmat! Ishga tushganda xabar beramiz.
+      </p>
+    </div>
+  </section>
+
+  <!-- SOCIALS -->
+  <section class="socials-section">
+    <p class="socials-label">Hoziroq kuzat</p>
+    <div class="socials-row">
+      <a href="https://instagram.com/sigmelle" target="_blank" class="social-link">Instagram</a>
+      <a href="https://youtube.com/@sigmelle" target="_blank" class="social-link">YouTube</a>
+      <a href="https://t.me/sigmelle" target="_blank" class="social-link">Telegram</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo"><span class="gold">σ</span> Sigmelle</div>
+    <div class="footer-copy">© 2025 Sigmelle. Barcha huquqlar himoyalangan.</div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
