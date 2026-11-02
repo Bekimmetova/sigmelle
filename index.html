@@ -1,69 +1,160 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sigmelle — Matematika, IT va AI o'rganish platformasi</title>
-  <meta name="description" content="Sigmelle — matematika, dasturlash va sun'iy intellektni o'zbek, rus va ingliz tillarida bepul o'rganish platformasi. Tez orada!" />
-  <meta name="keywords" content="matematika, dasturlash, AI, machine learning, o'zbek, python, sigmelle" />
-  <meta name="robots" content="index, follow" />
-  <meta property="og:title" content="Sigmelle — Matematika, IT va AI" />
-  <meta property="og:description" content="Bepul, ko'p tilli online o'quv platformasi. Tez orada!" />
-  <meta property="og:url" content="https://sigmelle.com" />
-  <meta property="og:type" content="website" />
-  <link rel="canonical" href="https://sigmelle.com" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oʻzbek alifbosi: Lotin ⇄ Kirill</title>
+<style>
+:root{--bg:#f7f6f2;--card:#fff;--tx:#1d1d1b;--mu:#6b6a63;--bd:#dcdad0;--ac:#1a5fb4;--ac2:#e8f0fb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181a;--card:#222428;--tx:#ececea;--mu:#a2a19a;--bd:#3a3c41;--ac:#7db0f5;--ac2:#27364a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17181a;--card:#222428;--tx:#ececea;--mu:#a2a19a;--bd:#3a3c41;--ac:#7db0f5;--ac2:#27364a;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:0 0 4px}
+p.sub{margin:0 0 16px;color:var(--mu)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:16px}
+.modes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+button{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:8px 12px}
+button.on{background:var(--ac2);border-color:var(--ac);color:var(--ac);font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:.85rem;color:var(--mu);margin-bottom:4px}
+textarea{width:100%;min-height:170px;resize:vertical;font:inherit;font-size:1.05rem;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx)}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.key{min-width:44px;font-weight:600}
+.hint{color:var(--mu);font-size:.85rem}
+.tbl{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.tbl div{border:1px solid var(--bd);border-radius:10px;padding:8px;text-align:center;background:var(--bg)}
+.tbl b{display:block;font-size:1.15rem}
+.tbl span{color:var(--mu)}
+ul{margin:6px 0 0;padding-left:20px}
+</style>
 </head>
 <body>
+<main>
+<h1>Oʻzbek alifbosi: Lotin ⇄ Kirill</h1>
+<p class="sub">Matnni kiriting, natija darhol chiqadi. Internet, dastur yoki maxsus shrift shart emas, har qanday qurilmada ishlaydi.</p>
 
- 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="coming-pill">
-      <span class="pulse"></span>
-      Ishga tushishiga oz qoldi
+<section class="card">
+  <div class="modes" role="group" aria-label="Yoʻnalish">
+    <button id="m-auto" class="on" type="button">Avto</button>
+    <button id="m-l2c" type="button">Lotin → Kirill</button>
+    <button id="m-c2l" type="button">Kirill → Lotin</button>
+  </div>
+  <div class="grid">
+    <div>
+      <label for="inp">Matn</label>
+      <textarea id="inp" placeholder="Masalan: Oʻzbekiston / Ўзбекистон" spellcheck="false"></textarea>
+      <div class="row">
+        <span class="hint">Lotin belgilari:</span>
+        <button class="key" type="button" data-ins="oʻ">oʻ</button>
+        <button class="key" type="button" data-ins="gʻ">gʻ</button>
+        <button class="key" type="button" data-ins="ʼ">ʼ</button>
+      </div>
     </div>
-
-  <!-- NOTIFY -->
-  <section class="notify-section" id="notify">
-    <div class="notify-box">
-      <h2>Birinchilardan bo'l</h2>
-      <p>Sigmelle ishga tushganda xabar olish uchun emailingni qoldiring</p>
-      <form class="email-form" onsubmit="handleSubmit(event)">
-        <input
-          class="email-input"
-          type="email"
-          placeholder="email@example.com"
-          required
-          id="emailInput"
-        />
-        <button class="email-btn" type="submit">Xabar ber</button>
-      </form>
-      <p class="success-msg" id="successMsg" style="display:none">
-        ✓ Rahmat! Ishga tushganda xabar beramiz.
-      </p>
+    <div>
+      <label for="out">Natija</label>
+      <textarea id="out" readonly></textarea>
+      <div class="row">
+        <button id="copy" type="button">Nusxa olish</button>
+        <button id="swap" type="button">Almashtirish</button>
+        <button id="clr" type="button">Tozalash</button>
+        <span id="st" class="hint" aria-live="polite"></span>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- SOCIALS 
-  <section class="socials-section">
-    <p class="socials-label">Hoziroq kuzat</p>
-    <div class="socials-row">
-      <a href="https://instagram.com/sigmelle" target="_blank" class="social-link">Instagram</a>
-      <a href="https://youtube.com/@sigmelle" target="_blank" class="social-link">YouTube</a>
-      <a href="https://t.me/sigmelle" target="_blank" class="social-link">Telegram</a>
-    </div>
-  </section>-->
+<section class="card">
+  <h2 style="margin:0 0 10px;font-size:1.1rem">Alifbo jadvali</h2>
+  <div class="tbl" id="tbl"></div>
+  <ul class="hint">
+    <li>E harfi: soʻz boshida va unlidan keyin Kirillda «Э/Е» bilan yoziladi, Lotinda «ye» boʻlishi mumkin (Yevropa, Европа).</li>
+    <li>Tutuq belgisi (ʼ) Kirillda «ъ» ga mos (maʼno, маъно).</li>
+    <li>Ц harfi Lotinda «s» ga oʻtkaziladi, ь tushirib qoldiriladi.</li>
+  </ul>
+</section>
+</main>
+<script>
+(function(){
+var C2L={"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"yo","ж":"j","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"x","ц":"s","ч":"ch","ш":"sh","ъ":"ʼ","ь":"","э":"e","ю":"yu","я":"ya","ў":"oʻ","қ":"q","ғ":"gʻ","ҳ":"h"};
+var L1={a:"а",b:"б",d:"д",f:"ф",g:"г",h:"ҳ",i:"и",j:"ж",k:"к",l:"л",m:"м",n:"н",o:"о",p:"п",q:"қ",r:"р",s:"с",t:"т",u:"у",v:"в",x:"х",y:"й",z:"з","'":"ъ"};
+var L2={sh:"ш",ch:"ч",ng:"нг",yo:"ё",yu:"ю",ya:"я",ye:"е","o'":"ў","g'":"ғ"};
+var CYR=/[а-яёўқғҳ]/i, LAT=/[a-z]/i, CUP=/[А-ЯЁЎҚҒҲ]/, VOW="аеёиоуўэюя";
+function cap(r,up,nextUp){ if(!up||!r) return r; return nextUp? r.toUpperCase() : r.charAt(0).toUpperCase()+r.slice(1); }
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-logo"><span class="gold">σ</span> Sigmelle</div>
-    <div class="footer-copy">© 2026 Sigmelle. Barcha huquqlar himoyalangan.</div>
-  </footer>
+function l2c(s){
+  s=s.replace(/[ʻʼ’‘`´]/g,"'");
+  var out="",i=0;
+  while(i<s.length){
+    var c=s[i], lc=c.toLowerCase(), up=c!==lc, two=s.substr(i,2).toLowerCase();
+    if(L2[two] && LAT.test(c)){
+      var n=s[i+1], nu=n!==n.toLowerCase();
+      out+=cap(L2[two],up,nu); i+=2; continue;
+    }
+    if(lc==="e" && LAT.test(c)){
+      var p=s[i-1];
+      out+= (!p||!LAT.test(p)&&p!=="'") ? (up?"Э":"э") : (up?"Е":"е"); i++; continue;
+    }
+    if(L1[lc] && (LAT.test(c)||c==="'")){ out+=up?L1[lc].toUpperCase():L1[lc]; i++; continue; }
+    out+=c; i++;
+  }
+  return out;
+}
 
-  <script src="main.js"></script>
+function c2l(s){
+  var out="";
+  for(var i=0;i<s.length;i++){
+    var c=s[i], lc=c.toLowerCase(), up=c!==lc;
+    if(!CYR.test(c)){ out+=c; continue; }
+    var nx=s[i+1], nu=!!nx&&CUP.test(nx), r;
+    if(lc==="е"){
+      var p=s[i-1];
+      r=(!p||!CYR.test(p)||VOW.indexOf(p.toLowerCase())>-1)?"ye":"e";
+    } else r=C2L[lc];
+    out+= (r==="ʼ") ? r : cap(r,up,nu);
+  }
+  return out;
+}
+
+var mode="auto", inp=document.getElementById("inp"), out=document.getElementById("out"), st=document.getElementById("st");
+function detect(s){
+  var c=(s.match(/[а-яёўқғҳ]/gi)||[]).length, l=(s.match(/[a-z]/gi)||[]).length;
+  return c>l?"c2l":"l2c";
+}
+function run(){
+  var s=inp.value, m=mode==="auto"?detect(s):mode;
+  out.value = m==="c2l"? c2l(s) : l2c(s);
+}
+function setMode(m){
+  mode=m;
+  ["auto","l2c","c2l"].forEach(function(k){ document.getElementById("m-"+k).className=(k===m?"on":""); });
+  run();
+}
+["auto","l2c","c2l"].forEach(function(k){ document.getElementById("m-"+k).addEventListener("click",function(){setMode(k);}); });
+inp.addEventListener("input",run);
+
+document.querySelectorAll("[data-ins]").forEach(function(b){
+  b.addEventListener("click",function(){
+    var v=b.getAttribute("data-ins"), a=inp.selectionStart||0, e=inp.selectionEnd||0;
+    inp.value=inp.value.slice(0,a)+v+inp.value.slice(e);
+    inp.focus(); inp.selectionStart=inp.selectionEnd=a+v.length; run();
+  });
+});
+function msg(t){ st.textContent=t; setTimeout(function(){st.textContent="";},1800); }
+document.getElementById("copy").addEventListener("click",function(){
+  var t=out.value; if(!t) return;
+  function fb(){ out.select(); try{ document.execCommand("copy"); msg("Nusxalandi"); }catch(e){ msg("Matnni qoʻlda belgilab nusxalang"); } }
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){msg("Nusxalandi");},fb); } else fb();
+});
+document.getElementById("swap").addEventListener("click",function(){ if(!out.value) return; inp.value=out.value; run(); });
+document.getElementById("clr").addEventListener("click",function(){ inp.value=""; run(); inp.focus(); });
+
+var T=[["A a","А а"],["B b","Б б"],["D d","Д д"],["E e","Е е / Э э"],["F f","Ф ф"],["G g","Г г"],["H h","Ҳ ҳ"],["I i","И и"],["J j","Ж ж"],["K k","К к"],["L l","Л л"],["M m","М м"],["N n","Н н"],["O o","О о"],["P p","П п"],["Q q","Қ қ"],["R r","Р р"],["S s","С с"],["T t","Т т"],["U u","У у"],["V v","В в"],["X x","Х х"],["Y y","Й й"],["Z z","З з"],["Oʻ oʻ","Ў ў"],["Gʻ gʻ","Ғ ғ"],["Sh sh","Ш ш"],["Ch ch","Ч ч"],["Ng ng","Нг нг"],["ʼ","Ъ ъ"]];
+document.getElementById("tbl").innerHTML=T.map(function(r){return "<div><b>"+r[0]+"</b><span>"+r[1]+"</span></div>";}).join("");
+})();
+</script>
 </body>
 </html>
