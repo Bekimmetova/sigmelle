@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{% if all_users %}Barcha yechimlar{% else %}Mening yechimlarim{% endif %}</h2>
+<table class="table" id="subs">
+  <thead><tr><th>ID</th><th>Vaqt</th>{% if all_users %}<th>Ishtirokchi</th>{% endif %}<th>Masala</th><th>Til</th><th>Natija</th><th>Testlar</th><th>Ball</th><th>Vaqt</th></tr></thead>
+  <tbody>
+  {% for s in rows %}
+    <tr>
+      <td><a href="{{ url_for('submission', sid=s.id) }}">#{{ s.id }}</a></td>
+      <td class="small">{{ s.created[11:19] }}</td>
+      {% if all_users %}<td>{{ s.full_name }} <span class="muted small">({{ s.username }})</span></td>{% endif %}
+      <td><span class="pid">{{ s.problem }}</span> {{ titles.get(s.problem, '') }}</td>
+      <td class="small">{{ LANGS[s.lang].name }}</td>
+      <td>{% if s.status != 'done' %}<span class="v wait">Tekshirilmoqda…</span>{% else %}<span class="v {{ s.verdict }}">{{ VERDICT_UZ.get(s.verdict, s.verdict) }}</span>{% endif %}</td>
+      <td>{% if s.status == 'done' and s.total %}{{ s.passed }}/{{ s.total }}{% endif %}</td>
+      <td><b>{{ s.score if s.status == 'done' else '' }}</b></td>
+      <td class="small">{% if s.status == 'done' %}{{ s.time_ms }} ms{% endif %}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="9" class="center muted">Hozircha yechimlar yo'q.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+{% block scripts %}
+{% if rows and rows|selectattr('status','ne','done')|list %}<script>setTimeout(()=>location.reload(),3000)</script>{% endif %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{
+  "title": "Shaharlar orasidagi yo'l",
+  "points": 350,
+  "time_limit": 2,
+  "memory_limit": 256,
+  "samples": [
+    1,
+    2
+  ]
+}

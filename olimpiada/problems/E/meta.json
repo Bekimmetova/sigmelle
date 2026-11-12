@@ -1,0 +1,10 @@
+{
+  "title": "Zinapoya",
+  "points": 200,
+  "time_limit": 1,
+  "memory_limit": 128,
+  "samples": [
+    1,
+    2
+  ]
+}

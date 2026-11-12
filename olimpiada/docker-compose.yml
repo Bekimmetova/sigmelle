@@ -1,0 +1,16 @@
+services:
+  olimpiada:
+    build: .
+    ports:
+      - "80:5000"
+    environment:
+      SECRET_KEY: "bu-yerga-uzun-tasodifiy-satr-yozing"
+      ADMIN_USER: "admin"
+      ADMIN_PASSWORD: "ParolniAlmashtiring2026"
+      CONTEST_TITLE: "Algoritmlarni loyihalash — talabalar olimpiadasi"
+      JUDGE_WORKERS: "2"
+    volumes:
+      - ./data:/app/data
+    mem_limit: 2g
+    pids_limit: 512
+    restart: unless-stopped

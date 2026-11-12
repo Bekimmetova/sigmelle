@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>{{ contest_title }}</h1>
+  <p class="muted">Olimpiada oynasi: <b>{{ c_start.strftime('%d.%m.%Y %H:%M') }}</b> — <b>{{ c_end.strftime('%d.%m.%Y %H:%M') }}</b>.
+    Har bir bo'limni shu oraliqda boshlash mumkin; boshlaganingizdan keyin shaxsiy taymeringiz ishlaydi.</p>
+  {% if not me %}<p><a class="btn" href="{{ url_for('register') }}">Ro'yxatdan o'tish</a> <a class="btn ghost" href="{{ url_for('login') }}">Kirish</a></p>{% endif %}
+</section>
+
+<div class="grid2 eq sections">
+  {% for sec, title, desc, mins, url in [
+      ('test', 'Test', nq ~ " ta savol · " ~ qmax ~ " ball · interaktiv savollar bor", setting('test_minutes'), url_for('test_page')),
+      ('problems', 'Masalalar', np ~ " ta masala · " ~ pmax ~ " ball · C++ / Python", setting('problems_minutes'), url_for('problem_list'))] %}
+  {% set i = info.get(sec) if info else None %}
+  <div class="card section-card">
+    <div class="sec-head"><h2>{{ title }}</h2><span class="pill">⏱ {{ mins }} daqiqa</span></div>
+    <p class="muted">{{ desc }}</p>
+    {% if me and me.is_admin %}
+      <a class="btn ghost" href="{{ url_for('admin_quiz_key') if sec == 'test' else url_for('problem_list') }}">Ko'rish (admin)</a>
+    {% elif not me %}
+      <p class="small muted">Boshlash uchun tizimga kiring.</p>
+    {% elif i.state == 'none' %}
+      {% if state == 'running' and not active %}
+        <form method="post" action="{{ url_for('start_section', sec=sec) }}"
+              onsubmit="return confirm('{{ title }} bo\'limini boshlaysizmi? Taymer darhol ishga tushadi ({{ mins }} daqiqa) va uni to\'xtatib bo\'lmaydi.')">
+          <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+          <button class="btn">Boshlash</button>
+        </form>
+      {% elif active %}<p class="small muted">Avval "{{ active.name }}" bo'limini yakunlang.</p>
+      {% elif state == 'before' %}<p class="small muted">Olimpiada hali boshlanmagan.</p>
+      {% else %}<p class="small muted">Olimpiada yakunlangan.</p>{% endif %}
+    {% elif i.state == 'active' %}
+      <p><span class="v wait">Davom etmoqda</span> · tugash: {{ i.deadline.strftime('%H:%M:%S') }}</p>
+      <a class="btn" href="{{ url }}">Davom ettirish</a>
+      <form method="post" action="{{ url_for('finish', sec=sec) }}" class="inline-block"
+            onsubmit="return confirm('Bo\'limni hozir yakunlaysizmi? Keyin unga qaytib bo\'lmaydi.')">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}"><button class="btn ghost">Yakunlash</button>
+      </form>
+    {% else %}
+      <p><span class="v AC">Yakunlangan</span></p>
+      <a class="btn ghost" href="{{ url }}">Natijani ko'rish</a>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card rules">
+  <h3>Qoidalar</h3>
+  <ul>
+    <li>Olimpiada ikki bo'limdan iborat: <b>Test</b> ({{ setting('test_minutes') }} daqiqa) va <b>Masalalar</b> ({{ setting('problems_minutes') }} daqiqa). Ularni <b>istalgan tartibda</b> bajarasiz, lekin bir vaqtda faqat bitta bo'lim ochiq bo'ladi.</li>
+    <li>Bo'limni boshlaganingizda shaxsiy taymer ishga tushadi. Vaqt tugaganda bo'lim avtomatik yopiladi. Vaqtdan oldin ham yakunlash mumkin.</li>
+    <li><b>Test:</b> savollar va variantlar har bir talabada boshqacha tartibda. Javoblar avtomatik saqlanadi. Har bir savol {{ (qmax / nq)|round|int }} ball, qisman ball berilmaydi. To'g'ri javoblar olimpiada tugagach ochiladi.</li>
+    <li><b>Masalalar:</b> yechim C++17 yoki Python 3 da, stdin/stdout orqali. Ball o'tgan testlar ulushiga qarab beriladi, masala bo'yicha eng yaxshi natija hisobga olinadi. "Namunada sinash" tugmasi ball bermaydi.</li>
+    <li><b>Reyting:</b> test va masalalar uchun alohida, hamda umumiy reyting (test — {{ setting('weight_test') }}%, masalalar — {{ setting('weight_problems') }}%). Teng ballda kam vaqt sarflagan yuqorida.</li>
+    <li><b>Halollik:</b> bo'lim davomida boshqa tab yoki dasturga o'tish, to'liq ekrandan chiqish, nusxalash/joylash urinishlari <b>qayd etiladi</b> va o'qituvchiga ko'rinadi.
+      {% if setting('max_violations') != '0' %} {{ setting('max_violations') }} ta qoidabuzarlikdan keyin bo'lim avtomatik yakunlanadi.{% endif %}
+      Bir xil yechimlar bekor qilinadi.</li>
+  </ul>
+</div>
+{% endblock %}

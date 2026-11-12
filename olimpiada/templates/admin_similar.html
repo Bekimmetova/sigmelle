@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>O'xshash yechimlar</h2>
+<p class="muted">Har bir masala bo'yicha talabalarning eng yaxshi yechimlari juft-juft solishtiriladi (izohlar va bo'sh joylar hisobga olinmaydi).
+  O'xshashlik chegarasi: <b>{{ (threshold * 100)|int }}%</b> · <a href="?t=0.7">70%</a> · <a href="?t=0.8">80%</a> · <a href="?t=0.9">90%</a></p>
+<table class="table">
+  <thead><tr><th>O'xshashlik</th><th>Masala</th><th>1-talaba</th><th>2-talaba</th></tr></thead>
+  <tbody>
+  {% for ratio, pid, a, b in pairs %}
+    <tr><td><b class="{{ 'bad' if ratio > 0.95 }}">{{ (ratio * 100)|round(1) }}%</b></td><td><span class="pid">{{ pid }}</span></td>
+      <td><a href="{{ url_for('submission', sid=a.id) }}">{{ a.full_name }} (#{{ a.id }})</a></td>
+      <td><a href="{{ url_for('submission', sid=b.id) }}">{{ b.full_name }} (#{{ b.id }})</a></td></tr>
+  {% else %}<tr><td colspan="4" class="center muted">Bu chegaradan yuqori o'xshash yechimlar topilmadi.</td></tr>{% endfor %}
+  </tbody>
+</table>
+<p class="small muted">Eslatma: oson masalalarda (A, B) to'g'ri yechimlar tabiiy ravishda o'xshash bo'ladi. Shubhali juftliklarni og'zaki savol bilan tekshiring.</p>
+{% endblock %}

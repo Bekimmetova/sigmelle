@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}{{ p.id }}. {{ p.title }}{% endblock %}
+{% block content %}
+<div class="grid2">
+  <article class="card statement">
+    <div class="ptitle"><span class="pid big">{{ p.id }}</span><h2>{{ p.title }}</h2></div>
+    <p class="limits">
+      <span>⏱ Vaqt: {{ p.time_limit }} s</span><span>💾 Xotira: {{ p.memory_limit }} MB</span>
+      <span>★ Ball: {{ p.points }}</span><span>🧪 Testlar: {{ p.ntests }}</span>
+      {% if best is not none %}<span class="mine">Sizning natijangiz: {{ best }}</span>{% endif %}
+    </p>
+    {{ p.statement|safe }}
+    <h3>Misollar</h3>
+    {% for i, o in p.samples %}
+      <div class="sample">
+        <div><div class="slabel">Kiruvchi ma'lumot</div><pre>{{ i }}</pre></div>
+        <div><div class="slabel">Chiquvchi ma'lumot</div><pre>{{ o }}</pre></div>
+      </div>
+    {% endfor %}
+  </article>
+  <aside class="card submit">
+    <h3>Yechim</h3>
+    {% if can_submit %}
+    <form method="post" enctype="multipart/form-data" id="subForm">
+      <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+      <label>Til
+        <select name="lang" id="lang">
+          {% for k, l in LANGS.items() %}<option value="{{ k }}" {% if k == (last_code.lang if last_code else last_lang) %}selected{% endif %}>{{ l.name }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Kod{% if block_paste %} <span class="small muted">(kodni joylash o'chirilgan — shu yerda yozing)</span>{% endif %}
+        <textarea name="code" id="code" rows="20" spellcheck="false" {% if block_paste %}data-nopaste="1"{% endif %}
+          placeholder="Kodingizni shu yerda yozing...">{{ session.get('draft_' ~ p.id) or (last_code.code if last_code else '') }}</textarea></label>
+      {% if not block_paste %}<label class="small">yoki fayl yuklang<input type="file" name="file" accept=".cpp,.cc,.py,.txt"></label>{% endif %}
+      <div class="btnrow">
+        <button type="button" class="btn ghost" id="runBtn">▶ Namunada sinash</button>
+        <button class="btn">Yuborish</button>
+      </div>
+    </form>
+    <div id="runOut"></div>
+    {% else %}
+      <p class="muted">Yechimlar faqat "Masalalar" bo'limi faol bo'lganda qabul qilinadi.</p>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+(function(){
+  const t=document.getElementById('code'); if(!t) return;
+  const CSRF=document.querySelector('meta[name=csrf]').content;
+  t.addEventListener('keydown',e=>{
+    if(e.key==='Tab'){e.preventDefault();const s=t.selectionStart;t.value=t.value.slice(0,s)+'    '+t.value.slice(t.selectionEnd);t.selectionStart=t.selectionEnd=s+4;}
+  });
+  document.getElementById('subForm').addEventListener('submit',()=>{window.__leaving=true;});
+  const out=document.getElementById('runOut'), btn=document.getElementById('runBtn');
+  const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  btn.addEventListener('click',async()=>{
+    btn.disabled=true;out.innerHTML='<div class="spinner"></div>';
+    try{
+      const r=await fetch('{{ url_for("api_run", pid=p.id) }}',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF':CSRF},
+        body:JSON.stringify({code:t.value,lang:document.getElementById('lang').value})});
+      const j=await r.json();
+      if(j.error){out.innerHTML='<div class="flash err">'+esc(j.error)+'</div>';}
+      else if(j.verdict==='CE'){out.innerHTML='<h4>Kompilyatsiya xatosi</h4><pre class="log">'+esc(j.compile_log)+'</pre>';}
+      else{out.innerHTML='<p class="small muted">Faqat namunaviy testlar — ball berilmaydi.</p>'+j.details.map(d=>
+        `<div class="runcase"><b>Misol ${d.test}: <span class="v ${d.verdict}">${esc({{ VERDICT_UZ|tojson }}[d.verdict]||d.verdict)}</span></b> <span class="small muted">${d.time_ms} ms</span>
+         <div class="sample"><div><div class="slabel">Sizning chiqishingiz</div><pre>${esc(d.output)}</pre></div>
+         <div><div class="slabel">Kutilgan</div><pre>${esc(d.expected)}</pre></div></div>${d.stderr?'<pre class="log">'+esc(d.stderr)+'</pre>':''}</div>`).join('');}
+    }catch(e){out.innerHTML='<div class="flash err">Tarmoq xatosi</div>';}
+    btn.disabled=false;
+  });
+})();
+</script>
+{% endblock %}

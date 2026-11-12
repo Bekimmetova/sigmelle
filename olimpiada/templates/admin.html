@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin panel</h2>
+<p class="btnrow">
+  <a class="btn sm" href="{{ url_for('admin_submissions') }}">Barcha yechimlar</a>
+  <a class="btn sm" href="{{ url_for('admin_similar') }}">O'xshash yechimlar</a>
+  <a class="btn sm" href="{{ url_for('admin_quiz_key') }}">Test kaliti va statistika</a>
+  <a class="btn sm" href="{{ url_for('export_csv') }}">Natijalar (CSV / Excel)</a>
+  <a class="btn ghost sm" href="{{ url_for('admin_print') }}" target="_blank">Masalalarni chop etish</a>
+  <span class="muted small">Tekshiruv navbatida: {{ queue }} ta</span>
+</p>
+<form method="post" class="card">
+  <input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="action" value="settings">
+  <h3>Olimpiada sozlamalari</h3>
+  <div class="formgrid">
+    <label>Olimpiada oynasi boshlanishi<input type="datetime-local" name="start" value="{{ s.start }}" required></label>
+    <label>Olimpiada oynasi tugashi<input type="datetime-local" name="end" value="{{ s.end }}" required></label>
+    <label>Test davomiyligi (daqiqa)<input type="number" min="1" name="test_minutes" value="{{ s.test_minutes }}"></label>
+    <label>Masalalar davomiyligi (daqiqa)<input type="number" min="1" name="problems_minutes" value="{{ s.problems_minutes }}"></label>
+    <label>Umumiy reytingda test ulushi (%)<input type="number" min="0" name="weight_test" value="{{ s.weight_test }}"></label>
+    <label>Umumiy reytingda masalalar ulushi (%)<input type="number" min="0" name="weight_problems" value="{{ s.weight_problems }}"></label>
+    <label>Masalalar reytingini oxirgi N daqiqada muzlatish (0 — yo'q)<input type="number" min="0" name="freeze_minutes" value="{{ s.freeze_minutes }}"></label>
+    <label>N ta qoidabuzarlikda bo'limni avtomatik yakunlash (0 — faqat qayd etish)<input type="number" min="0" name="max_violations" value="{{ s.max_violations }}"></label>
+  </div>
+  <label class="check"><input type="checkbox" name="registration" {% if s.registration == '1' %}checked{% endif %}> Ro'yxatdan o'tish ochiq</label>
+  <label class="check"><input type="checkbox" name="guard_test" {% if s.guard_test == '1' %}checked{% endif %}> Testda nazorat: to'liq ekran, boshqa tab/dasturga o'tish, nusxalash/joylashni qayd etish</label>
+  <label class="check"><input type="checkbox" name="guard_problems" {% if s.guard_problems == '1' %}checked{% endif %}> Masalalarda nazorat: boshqa tab/dasturga o'tishni qayd etish <span class="muted small">(talabalar kodni faqat saytda yozsa yoqing)</span></label>
+  <label class="check"><input type="checkbox" name="block_paste_problems" {% if s.block_paste_problems == '1' %}checked{% endif %}> Masalalarda kod joylash (paste) va fayl yuklashni taqiqlash</label>
+  <p class="small muted">Taymer formulasi: tugash = min(boshlash + davomiylik, oyna tugashi) + admin qo'shgan daqiqalar. Kechroq boshlagan talabaning vaqti oyna tugashi bilan qisqaradi.</p>
+  <button class="btn">Saqlash</button>
+</form>
+
+<div class="card">
+  <h3>Qayta tekshirish</h3>
+  <form method="post" onsubmit="return confirm('Barcha yechimlar qayta tekshirilsinmi?')">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="action" value="rejudge">
+    <button class="btn ghost sm">Hamma yechimlarni qayta tekshirish</button> <span class="small muted">Testlar o'zgartirilganda kerak bo'ladi.</span>
+  </form>
+</div>
+
+<h3>Ishtirokchilar ({{ urows|length }})</h3>
+<div class="scroll">
+<table class="table small">
+  <thead><tr><th>F.I.Sh.</th><th>Guruh</th><th>Login</th><th>Test</th><th>Masalalar</th><th>Qoidabuzarlik</th><th>Vaqt qo'shish / qayta ochish</th><th>Parol</th><th></th></tr></thead>
+  <tbody>
+  {% for r in urows %}{% set u = r.u %}
+    <tr>
+      <td>{{ u.full_name }}</td><td>{{ u.group_name }}</td><td>{{ u.username }}</td>
+      {% for i in [r.test, r.prob] %}
+      <td>{% if i.state == 'none' %}<span class="muted">—</span>{% elif i.state == 'active' %}<span class="v wait">faol · {{ i.deadline.strftime('%H:%M') }} gacha</span>{% else %}<span class="v AC">yakunlangan</span>{% endif %}</td>
+      {% endfor %}
+      <td><a href="{{ url_for('admin_events', uid=u.id) }}" class="{{ 'bad' if (r.vt + r.vp) > 0 }}">T: {{ r.vt }} · M: {{ r.vp }}</a></td>
+      <td><form method="post" class="inline">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="uid" value="{{ u.id }}">
+        <select name="section"><option value="test">Test</option><option value="problems">Masalalar</option></select>
+        <input name="minutes" type="number" value="10" min="1" style="width:64px">
+        <button class="btn sm" name="action" value="extend" title="Daqiqa qo'shish (yakunlangan bo'lsa qayta ochiladi)">+ daq.</button>
+        <button class="btn danger sm" name="action" value="reset_attempt" onclick="return confirm('Urinish va (test bo\'lsa) javoblar o\'chiriladi. Davom etasizmi?')">Bekor</button>
+      </form></td>
+      <td><form method="post" class="inline">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="action" value="reset_pw"><input type="hidden" name="uid" value="{{ u.id }}">
+        <input name="new_password" placeholder="yangi parol" minlength="6" required style="width:110px"><button class="btn sm">OK</button></form></td>
+      <td><form method="post" class="inline" onsubmit="return confirm('{{ u.full_name }} va uning barcha natijalari o\'chirilsinmi?')">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="action" value="delete_user"><input type="hidden" name="uid" value="{{ u.id }}">
+        <button class="btn danger sm">O'chirish</button></form></td>
+    </tr>
+  {% else %}<tr><td colspan="9" class="center muted">Hali ishtirokchilar yo'q.</td></tr>{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

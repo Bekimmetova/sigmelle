@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Test natijasi</h2>
+<div class="card result">
+  <span class="v big {{ 'AC' if score == qmax else 'PARTIAL' }}">{{ score }} / {{ qmax }} ball</span>
+  <span>To'g'ri javoblar: <b>{{ results.values()|select|list|length }} / {{ qs|length }}</b></span>
+  <span>Sarflangan vaqt: <b>{{ ((info.end - info.start).total_seconds() // 60)|int }} daq. {{ ((info.end - info.start).total_seconds() % 60)|int }} s</b></span>
+</div>
+{% if not reveal %}
+  <p class="muted">Har bir savol bo'yicha to'g'ri javoblar olimpiada tugagandan keyin shu sahifada ko'rsatiladi.</p>
+{% else %}
+  {% for q in qs %}
+  <section class="card question {{ 'right' if results[q.id] else 'wrong' }}">
+    <div class="qhead"><span class="pid">{{ loop.index }}</span>
+      <span class="v {{ 'AC' if results[q.id] else 'WA' }}">{{ "To'g'ri" if results[q.id] else "Noto'g'ri" }}</span></div>
+    <div class="qtext">{{ q.html }}</div>
+    {% if q.code %}<pre class="qcode">{{ q.code }}</pre>{% endif %}
+    {% set a = answers.get(q.id) %}
+    <p class="small"><b>To'g'ri javob:</b>
+      {% if q.type == 'single' %}{{ q.options[q.answer] }}
+      {% elif q.type == 'multi' %}{% for i in q.answer %}{{ q.options[i] }}{% if not loop.last %}; {% endif %}{% endfor %}
+      {% elif q.type == 'text' %}{{ q.answer[0] }}
+      {% elif q.type == 'order' %}{{ q['items']|join(' → ') }}
+      {% elif q.type == 'match' %}{% for l in q.left %}{{ l }} → {{ q.right[q.answer[loop.index0]] }}{% if not loop.last %}; {% endif %}{% endfor %}{% endif %}
+    </p>
+  </section>
+  {% endfor %}
+{% endif %}
+{% endblock %}
